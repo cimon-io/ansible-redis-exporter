@@ -1,0 +1,12 @@
+---
+- name: Assert usage of systemd as an init system
+  assert:
+    that: ansible_service_mgr == 'systemd'
+    msg: "This role only works with systemd"
+
+- name: Check if redis_exporter is installed
+  stat:
+    path: "/usr/local/bin/redis_exporter"
+  register: __redis_exporter_is_installed
+  tags:
+    - redis_exporter_install

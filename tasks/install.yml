@@ -1,0 +1,54 @@
+---
+- name: Create the redis_exporter group
+  group:
+    name: "{{ redis_exporter_system_group }}"
+    state: present
+    system: true
+  when: redis_exporter_system_group != "root"
+
+- name: Create the redis_exporter user
+  user:
+    name: "{{ redis_exporter_system_user }}"
+    groups: "{{ redis_exporter_system_group }}"
+    append: true
+    shell: /usr/sbin/nologin
+    system: true
+    createhome: false
+  when: redis_exporter_system_user != "root"
+
+- name: Download redis_exporter binary
+  become: false
+  get_url:
+    url: "https://github.com/oliver006/redis_exporter/releases/download/v{{ redis_exporter_version }}/redis_exporter-v{{ redis_exporter_version }}.linux-amd64.tar.gz"
+    dest: "/tmp/redis_exporter-v{{ redis_exporter_version }}.linux-amd64.tar.gz"
+  register: _download_binary
+  until: _download_binary is succeeded
+  retries: 5
+  delay: 2
+  delegate_to: localhost
+  check_mode: false
+
+- name: Unpack redis_exporter binary
+  become: false
+  unarchive:
+    src: "/tmp/redis_exporter-v{{ redis_exporter_version }}.linux-amd64.tar.gz"
+    dest: "/tmp"
+    creates: "/tmp/redis_exporter-v{{ redis_exporter_version }}.linux-amd64/redis_exporter"
+  delegate_to: localhost
+  check_mode: false
+
+- name: Create /usr/local/bin
+  file:
+    path: /usr/local/bin
+    state: directory
+    mode: 0755
+
+- name: Propagate redis_exporter binaries
+  copy:
+    src: "/tmp/redis_exporter-v{{ redis_exporter_version }}.linux-amd64/redis_exporter"
+    dest: "/usr/local/bin/redis_exporter"
+    mode: 0755
+    owner: root
+    group: root
+  notify: restart redis_exporter
+  when: not ansible_check_mode

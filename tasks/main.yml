@@ -1,0 +1,26 @@
+---
+- import_tasks: preflight.yml
+  tags:
+    - redis_exporter_install
+    - redis_exporter_configure
+    - redis_exporter_run
+
+- import_tasks: install.yml
+  become: true
+  tags:
+    - redis_exporter_install
+
+- import_tasks: configure.yml
+  become: true
+  tags:
+    - redis_exporter_configure
+
+- name: Ensure redis_exporter is enabled on boot
+  become: true
+  systemd:
+    daemon_reload: true
+    name: redis_exporter
+    enabled: true
+    state: started
+  tags:
+    - redis_exporter_run

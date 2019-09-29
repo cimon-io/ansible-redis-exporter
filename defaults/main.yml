@@ -1,0 +1,25 @@
+---
+redis_exporter_version: "1.2.1"
+
+redis_exporter_system_group: "redis-exp"
+redis_exporter_system_user: "{{ redis_exporter_system_group }}"
+
+redis_exporter_env: {}
+# REDIS_ADDR - Address of the Redis instance, defaults to redis://localhost:6379.
+# REDIS_PASSWORD - Password of the Redis instance, defaults to "" (no password).
+# REDIS_EXPORTER_CHECK_KEYS - Comma separated list of key patterns to export value and length/size, eg: db3=user_count will export key user_count from db 3. db defaults to 0 if omitted. The key patterns specified with this flag will be found using SCAN. Use this option if you need glob pattern matching; check-single-keys is faster for non-pattern keys.
+# REDIS_EXPORTER_CHECK_SINGLE_KEYS - Comma separated list of keys to export value and length/size, eg: db3=user_count will export key user_count from db 3. db defaults to 0 if omitted. The keys specified with this flag will be looked up directly without any glob pattern matching. Use this option if you don't need glob pattern matching; it is faster than check-keys.
+# REDIS_EXPORTER_SCRIPT - Path to Redis Lua script for gathering extra metrics.
+# REDIS_EXPORTER_DEBUG - Verbose debug output
+# REDIS_EXPORTER_LOG_FORMAT - Log format, valid options are txt (default) and json.
+# REDIS_EXPORTER_NAMESPACE - Namespace for the metrics, defaults to redis.
+# REDIS_EXPORTER_CONNECTION_TIMEOUT - Timeout for connection to Redis instance, defaults to "15s" (in Golang duration format)
+# REDIS_EXPORTER_WEB_LISTEN_ADDRESS - Address to listen on for web interface and telemetry, defaults to 0.0.0.0:9121.
+# REDIS_EXPORTER_WEB_TELEMETRY_PATH - Path under which to expose metrics, defaults to /metrics.
+# REDIS_EXPORTER_REDIS_ONLY_METRICS - Whether to also export go runtime metrics, defaults to false.
+# REDIS_EXPORTER_INCL_SYSTEM_METRICS - Whether to include system metrics like total_system_memory_bytes, defaults to false.
+# REDIS_EXPORTER_IS_TILE38 - Whether to scrape Tile38 specific metrics, defaults to false.
+# REDIS_EXPORTER_EXPORT_CLIENT_LIST - Whether to scrape Client List specific metrics, defaults to false.
+# REDIS_EXPORTER_SKIP_TLS_VERIFICATION - Whether to to skip TLS verification
+# REDIS_EXPORTER_TLS_CLIENT_KEY_FILE - Name of the client key file (including full path) if the server requires TLS client authentication
+# REDIS_EXPORTER_TLS_CLIENT_CERT_FILE - Name the client cert file (including full path) if the server requires TLS client authentication
